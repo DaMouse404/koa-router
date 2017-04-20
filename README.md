@@ -129,6 +129,14 @@ router.url('user', 3);
 // => "/users/3"
 ```
 
+It is also exposed as `ctx.routeName` to allow you to easily identify the route being called:
+
+```javascript
+router.get('user', '/users/:id', function (ctx, next) {
+  console.log(ctx.routeName); // user
+});
+```
+
 #### Multiple middleware
 
 Multiple middleware may be given:

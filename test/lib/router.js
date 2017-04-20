@@ -1379,6 +1379,30 @@ describe('Router', function () {
         done();
       });
     });
+
+    it('places the route name on ctx', function (done) {
+      var app = new Koa();
+      var router = new Router();
+
+      router.get('user', '/users/:id', function (ctx, next) {
+        expect(ctx.routeName).to.be('user')
+        should.exist(ctx.params.id);
+        ctx.body = { hello: 'world' };
+      });
+
+      var routerMiddleware = router.routes();
+
+      request(http.createServer(
+        app
+          .use(routerMiddleware)
+          .callback()))
+      .get('/users/1')
+      .expect(200)
+      .end(function(err, res) {
+        if (err) return done(err);
+        done();
+      });
+    });
   });
 
   describe('If no HEAD method, default to GET', function () {
